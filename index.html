@@ -144,11 +144,17 @@
     .phase button { padding: .36rem .55rem; font-size: .7rem; }
     .tab b { font-size: .9rem; }
     .cards { grid-template-columns: 1fr; }
-    .set { width: 2.2rem; height: 2.2rem; }
-    .sets { max-width: 7.5rem; }
+    .set { width: 2.15rem; height: 2.3rem; }
+    .sets { max-width: 9.7rem; }
   }
   @media (min-width: 700px) { body { padding-inline: 20px; } .ex { padding-block: .65rem; } }
   @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+  .phase-tag { text-align: right; font: 600 .78rem 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; color: var(--text); line-height: 1.2; }
+  .phase-tag span { font: 500 .7rem 'Source Sans 3', sans-serif; text-transform: none; letter-spacing: 0; color: var(--dim); }
+  .mins { color: var(--text); font-weight: 600; }
+  .ex.ss, .ex.ss2 { box-shadow: inset 3px 0 0 var(--acc); }
+  .ex.ss2 { border-top: 1px dashed #2a2a35; }
+  .bi { display: block; font-size: .62rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: var(--acc); margin-bottom: .15rem; }
 </style>
 </head>
 <body>
@@ -156,10 +162,7 @@
   <div class="top">
     <div class="title-row">
       <h1>Treino<br>Sup / Inf</h1>
-      <div class="phase" role="group" aria-label="Fase do treino">
-        <button type="button" id="f1" aria-pressed="true">Sem. 1&#8211;2</button>
-        <button type="button" id="f2" aria-pressed="false">Sem. 3+</button>
-      </div>
+      <div class="phase-tag">Fase Volume<br><span>sem. 6&#8211;11</span></div>
     </div>
     <div class="tabs" role="tablist" id="tabs"></div>
   </div>
@@ -180,50 +183,56 @@
 <script>
 (function () {
   var R = [
-    { n: 'Isometria de adutores com bola', d: 'Deitado, joelhos dobrados, apertar a bola', s: [5, 5], r: '30s', u: 'tempo', rest: 30, tag: 1 },
-    { n: 'Copenhagen curto', d: 'Joelho de cima apoiado no banco \u00b7 progride para 3 s\u00e9ries', s: [0, 2], r: '15\u201320s', u: 'por lado', rest: 45, tag: 1 },
-    { n: 'Ponte bilateral', s: [2, 2], r: '12', u: 'reps', rest: 30 },
-    { n: 'Clamshell com mini band', s: [2, 2], r: '12', u: 'por lado', rest: 30 }
+    { n: 'Isometria de adutores com bola', d: 'Deitado, joelhos dobrados, apertar a bola', s: [3], r: '40s', u: 'tempo', rest: 30, tag: 1 },
+    { n: 'Copenhagen curto', d: 'Joelho de cima apoiado no banco', s: [3], r: '20\u201330s', u: 'por lado', rest: 45, tag: 1 },
+    { n: 'Clamshell com mini band', s: [2], r: '12', u: 'por lado', rest: 30 }
   ];
   var D = {
     supA: { tab: 'Sup A', k: 'sup', title: 'Superior A', sub: 'Segunda \u00b7 \u00eanfase em puxar', groups: [
       { g: 'Principal', c: 'main', ex: [
-        { n: 'Puxada alta (frente)', s: [2, 3], r: '10\u201312' },
-        { n: 'Supino reto m\u00e1quina', s: [2, 3], r: '10\u201312' },
-        { n: 'Remada baixa com tri\u00e2ngulo', s: [2, 3], r: '10\u201312' },
-        { n: 'Desenvolvimento sentado m\u00e1quina', s: [2, 3], r: '10\u201312' },
-        { n: 'Rosca direta sentado (halteres)', s: [2, 2], r: '10\u201312', rest: 60 },
-        { n: 'Tr\u00edceps corda (polia)', s: [2, 2], r: '10\u201312', rest: 60 } ] } ] },
+        { n: 'Puxada alta (frente)', s: [4], r: '8\u201312', ss: 1, rest: 0 },
+        { n: 'Supino reto m\u00e1quina', s: [4], r: '8\u201312', rest: 75 },
+        { n: 'Remada baixa com tri\u00e2ngulo', s: [3], r: '10\u201312', ss: 1, rest: 0 },
+        { n: 'Desenvolvimento sentado m\u00e1quina', s: [3], r: '10\u201312', rest: 75 },
+        { n: 'Crucifixo m\u00e1quina (peck deck)', d: 'Alongar bem o peito na volta', s: [3], r: '12\u201315', rest: 60 },
+        { n: 'Rosca direta sentado (halteres)', s: [3], r: '10\u201312', ss: 1, rest: 0 },
+        { n: 'Tr\u00edceps corda (polia)', s: [3], r: '10\u201312', rest: 45 } ] } ] },
     infA: { tab: 'Inf A', k: 'inf', title: 'Inferior A', sub: 'Ter\u00e7a \u00b7 \u00eanfase em quadr\u00edceps', groups: [
       { g: 'Principal', c: 'main', ex: [
-        { n: 'Leg press 45\u00b0', d: 'Amplitude moderada, sem descer al\u00e9m do conforto', s: [2, 3], r: '12\u201315' },
-        { n: 'Mesa flexora', s: [2, 3], r: '10\u201312' },
-        { n: 'Cadeira adutora leve', d: 'Carga baixa, sobe devagar semana a semana', s: [2, 2], r: '15', tag: 1, rest: 60 },
-        { n: 'Cadeira extensora', s: [2, 3], r: '12\u201315', rest: 60 },
-        { n: 'Panturrilha em p\u00e9', s: [3, 3], r: '15', rest: 45 } ] },
+        { n: 'Leg press 45\u00b0', d: 'Amplitude moderada, sem descer al\u00e9m do conforto', s: [4], r: '10\u201312', rest: 90 },
+        { n: 'Mesa flexora', s: [3], r: '10\u201312', ss: 1, rest: 0 },
+        { n: 'Cadeira extensora', s: [3], r: '12\u201315', rest: 60 },
+        { n: 'Cadeira adutora', d: 'Sobe a carga devagar; virilha manda', s: [3], r: '12\u201315', ss: 1, rest: 0, tag: 1 },
+        { n: 'Panturrilha em p\u00e9', s: [3], r: '12\u201315', rest: 45 } ] },
       { g: 'Core', c: 'core', ex: [
-        { n: 'Prancha frontal', s: [2, 3], r: '30s', u: 'tempo', rest: 45 },
-        { n: 'Dead bug', s: [2, 2], r: '8', u: 'por lado', rest: 45 } ] } ] },
+        { n: 'Prancha frontal', s: [2], r: '45s', u: 'tempo', ss: 1, rest: 0 },
+        { n: 'Dead bug', s: [2], r: '8', u: 'por lado', rest: 30 } ] } ] },
     supB: { tab: 'Sup B', k: 'sup', title: 'Superior B', sub: 'Quinta \u00b7 \u00eanfase em empurrar', groups: [
       { g: 'Principal', c: 'main', ex: [
-        { n: 'Supino inclinado com halteres', s: [2, 3], r: '10\u201312' },
-        { n: 'Remada sentada m\u00e1quina', s: [2, 3], r: '10\u201312' },
-        { n: 'Eleva\u00e7\u00e3o lateral (halteres)', s: [2, 3], r: '12\u201315', rest: 60 },
-        { n: 'Crucifixo invertido (m\u00e1quina)', s: [2, 3], r: '15', rest: 60 },
-        { n: 'Rosca martelo sentado', s: [2, 2], r: '10\u201312', rest: 60 },
-        { n: 'Tr\u00edceps franc\u00eas sentado', s: [2, 2], r: '10\u201312', rest: 60 } ] } ] },
+        { n: 'Supino inclinado com halteres', s: [4], r: '8\u201312', ss: 1, rest: 0 },
+        { n: 'Remada sentada m\u00e1quina', s: [4], r: '10\u201312', rest: 75 },
+        { n: 'Eleva\u00e7\u00e3o lateral (halteres)', s: [4], r: '12\u201315', ss: 1, rest: 0 },
+        { n: 'Crucifixo invertido (m\u00e1quina)', s: [4], r: '15', rest: 45 },
+        { n: 'Rosca martelo sentado', s: [3], r: '10\u201312', ss: 1, rest: 0 },
+        { n: 'Tr\u00edceps franc\u00eas sentado', s: [3], r: '10\u201312', rest: 45 } ] } ] },
     infB: { tab: 'Inf B', k: 'inf', title: 'Inferior B', sub: 'Sexta \u00b7 \u00eanfase em posterior e gl\u00fateo', groups: [
       { g: 'Principal', c: 'main', ex: [
-        { n: 'Hip thrust', d: 'Come\u00e7a com barra ou barra + 10 kg', s: [2, 3], r: '10\u201312' },
-        { n: 'Ponte unilateral', s: [2, 0], r: '10', u: 'por lado', rest: 60 },
-        { n: 'Stiff com halteres leve', d: 'Coluna neutra, desce at\u00e9 sentir o posterior', s: [0, 3], r: '10', tag: 1 },
-        { n: 'Cadeira extensora', s: [2, 3], r: '12\u201315', rest: 60 },
-        { n: 'Mesa flexora', s: [2, 2], r: '10\u201312', rest: 60 },
-        { n: 'Panturrilha sentado', s: [3, 3], r: '15', rest: 45 } ] },
-      { g: 'Core', c: 'core', ex: [
-        { n: 'Side plank est\u00e1tico', s: [2, 2], r: '20\u201330s', u: 'por lado', rest: 45 },
-        { n: 'Bird dog', s: [2, 2], r: '8', u: 'por lado', rest: 45 } ] } ] }
+        { n: 'Hip thrust', s: [4], r: '8\u201312', rest: 90 },
+        { n: 'Stiff com halteres', d: 'Coluna neutra, desce at\u00e9 sentir o posterior', s: [3], r: '8\u201310', rest: 75 },
+        { n: 'Cadeira extensora', s: [3], r: '12\u201315', ss: 1, rest: 0 },
+        { n: 'Mesa flexora', s: [3], r: '10\u201312', rest: 60 },
+        { n: 'Panturrilha sentado', s: [3], r: '15', ss: 1, rest: 0 },
+        { n: 'Side plank est\u00e1tico', s: [3], r: '30s', u: 'por lado', rest: 30 } ] } ] }
   };
+  function minutes(id) {
+    var t = 0;
+    D[id].groups.forEach(function (g) { g.ex.forEach(function (e) {
+      var w = /s$/.test(e.r) ? parseInt(e.r, 10) * (e.u === 'por lado' ? 2 : 1) + 10 : 45;
+      var r = e.rest === 0 ? 15 : (e.rest || 90);
+      t += e.s[0] * (w + r) + 60;
+    }); });
+    return Math.round(t / 60);
+  }
   var ORDER = ['supA', 'infA', 'supB', 'infB', 'guia'];
   var BYDAY = { 1: 'supA', 2: 'infA', 4: 'supB', 5: 'infB' };
 
@@ -233,7 +242,7 @@
   var today = new Date().toISOString().slice(0, 10);
   var st = load('treino-supinf-v1', {});
   if (st.date !== today) st = { date: today, phase: st.phase || 0, done: {} };
-  var phase = st.phase || 0;
+  var phase = 0;
   var cur = BYDAY[new Date().getDay()] || load('treino-aba', 'supA');
 
   var tabsEl = document.getElementById('tabs'), panel = document.getElementById('panel');
@@ -242,7 +251,9 @@
     var out = [];
     R.forEach(function (e, i) { out.push({ key: 'R' + i, e: e, g: 'reab' }); });
     D[id].groups.forEach(function (g, gi) { g.ex.forEach(function (e, i) { out.push({ key: gi + '-' + i, e: e, g: g.c }); }); });
-    return out.filter(function (x) { return x.e.s[phase] > 0; });
+    out = out.filter(function (x) { return x.e.s[phase] > 0; });
+    out.forEach(function (x, i) { if (i && out[i - 1].e.ss) x.pss = 1; });
+    return out;
   }
   function progress(id) {
     var tot = 0, dn = 0, d = st.done[id] || {};
@@ -270,20 +281,21 @@
   function exHTML(id, x) {
     var e = x.e, n = e.s[phase], d = ((st.done[id] || {})[x.key]) || [];
     var complete = d.filter(Boolean).length >= n;
-    var h = '<div class="ex' + (complete ? ' complete' : '') + '"><div class="ex-name">' + e.n +
+    var h = '<div class="ex' + (complete ? ' complete' : '') + (e.ss ? ' ss' : '') + (x.pss ? ' ss2' : '') + '"><div class="ex-name">' +
+      (e.ss ? '<span class="bi">bi-set \u00b7 alterne com o de baixo</span>' : '') + e.n +
       (e.tag ? '<span class="new">' + (x.g === 'reab' ? 'adutor' : 'novo') + '</span>' : '') +
       (e.d ? '<em>' + e.d + '</em>' : '') +
       '<span class="reps">' + e.r + '<small>' + (e.u || 'reps') + '</small></span></div><div class="sets">';
     for (var i = 0; i < n; i++) {
       h += '<button type="button" class="set" data-id="' + id + '" data-key="' + x.key + '" data-i="' + i + '" data-rest="' +
-        (e.rest || 90) + '" aria-pressed="' + (d[i] ? 'true' : 'false') + '" aria-label="' + e.n + ', s\u00e9rie ' + (i + 1) + '">' + (i + 1) + '</button>';
+        (e.rest === 0 ? 0 : (e.rest || 90)) + '" aria-pressed="' + (d[i] ? 'true' : 'false') + '" aria-label="' + e.n + ', s\u00e9rie ' + (i + 1) + '">' + (i + 1) + '</button>';
     }
     return h + '</div></div>';
   }
 
   function renderDay(id) {
     var day = D[id], list = exList(id), p = progress(id);
-    var h = '<div class="panel-head"><div><h2>' + day.title + '</h2><p>' + day.sub + '</p></div>' +
+    var h = '<div class="panel-head"><div><h2>' + day.title + '</h2><p>' + day.sub + ' \u00b7 <b class="mins">~' + minutes(id) + ' min</b> + reab.</p></div>' +
       '<div class="count"><b id="cdn">' + p[0] + '</b>/' + p[1] + ' s\u00e9ries</div></div>' +
       '<div class="bar"><i id="pbar" style="width:' + (p[1] ? p[0] / p[1] * 100 : 0) + '%"></i></div>';
     var groups = [{ c: 'reab', g: 'Reabilita\u00e7\u00e3o', note: 'antes de tudo \u00b7 8\u201310 min' }].concat(day.groups);
@@ -314,8 +326,12 @@
       '<span style="background:#4ade8033">0</span><span style="background:#4ade8033">1</span><span style="background:#4ade8033">2</span><span style="background:#4ade8033">3</span>' +
       '<span style="background:#fb718526">4</span><span style="background:#fb718526">5</span><span style="background:#fb718533">6+</span></div>' +
       '<p>At\u00e9 <b>3/10</b> durante o exerc\u00edcio \u00e9 aceit\u00e1vel, se no dia seguinte n\u00e3o estiver pior. Piorou: volte um passo.</p></div>' +
-      '<div class="card prog"><h3>Progress\u00e3o</h3><ul><li>Semanas 1\u20132: s\u00e9ries do bot\u00e3o \u201cSem. 1\u20132\u201d, cargas leves</li>' +
-      '<li>Semana 3+: troque para \u201cSem. 3+\u201d; entram Copenhagen e stiff</li><li>Bateu o topo das reps em todas as s\u00e9ries: +2\u20135% de carga</li>' +
+      '<div class="card prog"><h3>Progress\u00e3o</h3><ul><li><b>Bi-set:</b> faz a s\u00e9rie do 1\u00ba, vai direto para o 2\u00ba, s\u00f3 ent\u00e3o descansa</li>' +
+      '<li>Monte os dois aparelhos do bi-set antes de come\u00e7ar</li>' +
+      '<li>Academia cheia e o aparelho ocupado? Fa\u00e7a os dois exerc\u00edcios separados e corte 1 s\u00e9rie de cada</li>' +
+      '<li>Bateu o topo das reps em todas as s\u00e9ries: +2\u20135% de carga</li>' +
+      '<li>N\u00e3o completou as reps da 3\u00aa s\u00e9rie? A 4\u00aa fica de fora nesse exerc\u00edcio at\u00e9 completar</li>' +
+      '<li>Semana 12: deload, volta \u00e0s s\u00e9ries da Base com 70% da carga</li>' +
       '<li>Adutores progridem mais devagar que o resto</li></ul></div>' +
       '<div class="card cardio"><h3>Cardio leve</h3><ul><li>Bicicleta ou el\u00edptico, 20\u201330 min</li><li>Ritmo em que d\u00e1 para conversar</li>' +
       '<li>Quarta e s\u00e1bado; opcional ap\u00f3s o superior</li><li>Virilha reclamou: reduza o tempo antes de trocar o aparelho</li></ul></div>' +
@@ -338,19 +354,12 @@
     var id = b.dataset.id, key = b.dataset.key, i = +b.dataset.i;
     st.done[id] = st.done[id] || {}; var arr = st.done[id][key] = st.done[id][key] || [];
     arr[i] = !arr[i]; save('treino-supinf-v1', st);
-    if (arr[i]) startTimer(+b.dataset.rest);
+    if (arr[i]) { if (+b.dataset.rest > 0) startTimer(+b.dataset.rest); else { stopTimer(); tLbl.innerHTML = 'Bi-set: v\u00e1 direto<br>para o pr\u00f3ximo'; } }
     render();
     wake();
   });
 
-  function setPhase(p) {
-    phase = st.phase = p; save('treino-supinf-v1', st);
-    document.getElementById('f1').setAttribute('aria-pressed', p === 0);
-    document.getElementById('f2').setAttribute('aria-pressed', p === 1);
-    render();
-  }
-  document.getElementById('f1').onclick = function () { setPhase(0); };
-  document.getElementById('f2').onclick = function () { setPhase(1); };
+
 
   /* cron\u00f4metro */
   var tEl = document.getElementById('timer'), tNum = document.getElementById('tnum'), tLbl = document.getElementById('tlbl'), tId = null, tEnd = 0;
@@ -376,7 +385,7 @@
   function wake() { try { if (!lock && navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { lock = l; l.addEventListener('release', function () { lock = null; }); }).catch(function () {}); } catch (e) {} }
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && tId) wake(); });
 
-  setPhase(phase);
+  render();
 })();
 </script>
 <script>if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
